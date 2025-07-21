@@ -122,7 +122,7 @@ if ville_selectionnee:
         image = Image.open(buffer)
         image_cropped = image.crop((x, y, x + w, y + h))
         # Afficher l’image cropée dans Streamlit
-        st.image(image_cropped, caption="Carte satellite recadrée", use_container_width=True)
+        st.image(image_cropped, caption="Carte satellite recadrée", use_column_width=True)
 
         # Sauvegarder dans un buffer pour téléchargement
         buffer_cropped = io.BytesIO()
