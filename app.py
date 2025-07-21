@@ -89,7 +89,7 @@ if ville_selectionnee:
         # Choisir la taille du logo sur la carte (en mètres)
         h_px, w_px = logo_img.shape[0], logo_img.shape[1]
         aspect_ratio = h_px / w_px
-        logo_width_m = 300000  # largeur en mètres (~20 km)
+        logo_width_m = 420000  # largeur en mètres (~20 km)
         logo_height_m = logo_width_m * aspect_ratio  # hauteur proportionnelle
         buffer = io.BytesIO()
 
