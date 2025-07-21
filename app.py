@@ -6,7 +6,6 @@ import contextily as ctx
 import matplotlib.pyplot as plt
 from pyproj import Transformer 
 import matplotlib.image as mpimg
-from episodes import get_episodes
 
 st.set_page_config(page_title="Génération automatique de carte", layout="centered")
 st.title("Génération automatique de carte - Doudou podcast R&I")
@@ -31,6 +30,7 @@ def search_city(query):
     else:
         return []
 
+st.subheader("Sélectionner une ville en France")
 query = st.text_input("Tapez le nom de la ville")
 
 ville_selectionnee = None
@@ -60,6 +60,7 @@ if ville_selectionnee:
     lon = float(ville_selectionnee["lon"])
     st.success(f"Ville sélectionnée : {choice} ({lat}, {lon})")
 
+    st.subheader("Générer la carte & la compléter")
     with st.spinner("Génération de la carte..."):
         # Initialiser le transformeur lon/lat -> Web Mercator
         transformer = Transformer.from_crs("epsg:4326", "epsg:3857", always_xy=True)
@@ -112,6 +113,34 @@ if ville_selectionnee:
             zorder=10
         )
 
+        # Titre
+        titre = st.text_area("Titre de l'épisode", value="")
+        # 3 colonnes    
+        col1, col2,_, col3, col4 = st.columns([4, 4, 1,1, 1])
+        with col1:
+            taille_police = st.slider("Taille de la police", min_value=8, max_value=30, value=14, step=1)
+        with col2:
+            deplacement_vertical = st.slider("Décalage vertical (relatif)", min_value=-1.0, max_value=1.0, value=0.0, step=0.05)
+        with col3:
+            background_color = st.color_picker("Fond", value="#FFFFFF")
+        with col4:
+            title_color = st.color_picker("Texte", value="#000000")
+        # Ajouter le texte centré sur l'image
+        if titre:
+            center_x = (xmin + xmax) / 2
+            center_y = (ymin + ymax) / 2 + 0.5* deplacement_vertical*(ymax - ymin)  # Ajuster verticalement
+
+            ax.text(
+                center_x,
+                center_y,
+                titre,
+                fontsize=taille_police,
+                ha='center',
+                va='center',
+                color=title_color,
+                bbox=dict(facecolor=background_color, alpha=0.8, edgecolor='none', boxstyle='round,pad=0.5')
+            )
+
         ax.axis('off')
         ax.set_aspect('equal')
 
@@ -136,13 +165,6 @@ if ville_selectionnee:
             mime="image/png",
             type="secondary"
         )
-        titles_list = get_episodes()
-        st.subheader("Épisodes du podcast Doudou R&I")
-        if titles_list:
-            for title in titles_list:
-                st.write(f"- {title}")
-        else:
-            st.write("Aucun épisode trouvé.")
 
 
     if False:
