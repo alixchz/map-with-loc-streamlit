@@ -6,3 +6,5 @@ matplotlib
 pyproj
 numpy
 scikit-image
+requests
+bs4

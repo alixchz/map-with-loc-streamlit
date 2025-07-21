@@ -6,6 +6,7 @@ import contextily as ctx
 import matplotlib.pyplot as plt
 from pyproj import Transformer 
 import matplotlib.image as mpimg
+from episodes import get_episodes
 
 st.set_page_config(page_title="Génération automatique de carte", layout="centered")
 st.title("Génération automatique de carte - Doudou podcast R&I")
@@ -135,6 +136,14 @@ if ville_selectionnee:
             mime="image/png",
             type="secondary"
         )
+        titles_list = get_episodes()
+        st.subheader("Épisodes du podcast Doudou R&I")
+        if titles_list:
+            for title in titles_list:
+                st.write(f"- {title}")
+        else:
+            st.write("Aucun épisode trouvé.")
+
 
     if False:
         # Ajouter des cases pour les coordonnées de recadrage
