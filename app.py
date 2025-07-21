@@ -1,8 +1,5 @@
 import streamlit as st
 import requests
-import folium
-from streamlit_folium import st_folium
-from staticmap import StaticMap, CircleMarker
 from PIL import Image
 import io
 import contextily as ctx
@@ -62,41 +59,6 @@ if ville_selectionnee:
     lon = float(ville_selectionnee["lon"])
     st.success(f"Ville sélectionnée : {choice} ({lat}, {lon})")
 
-    if False:
-        # Carte Folium satellite (inchangée)
-        m = folium.Map(location=[lat_france, lon_france], zoom_start=5.5, control_scale=True)
-        folium.TileLayer(
-            tiles='https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-            attr='Esri',
-            name='Esri Satellite',
-            overlay=False,
-            control=True
-        ).add_to(m)
-
-        folium.Marker(
-            [lat, lon],
-            popup=choice,
-            icon=folium.Icon(color='red', icon='map-marker')
-        ).add_to(m)
-
-        st_folium(m, width=800, height=600)
-
-        # Carte StaticMap (inchangée)
-        m = StaticMap(600, 400)
-        marker = CircleMarker((lon, lat), 'red', 12)
-        m.add_marker(marker)
-        image = m.render(zoom=5, center=(lon_france, lat_france))
-        st.image(image)
-
-        buffer = io.BytesIO()
-        image.save(buffer, format="PNG")
-        buffer.seek(0)
-        st.download_button(
-            label="Télécharger la carte en PNG",
-            data=buffer,
-            file_name="carte_ville.png",
-            mime="image/png"
-        )
     with st.spinner("Génération de la carte..."):
         # Initialiser le transformeur lon/lat -> Web Mercator
         transformer = Transformer.from_crs("epsg:4326", "epsg:3857", always_xy=True)
