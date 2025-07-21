@@ -77,7 +77,7 @@ if ville_selectionnee:
         ctx.add_basemap(ax, source=ctx.providers.Esri.WorldImagery, zoom=6)
 
         # Charger logo PNG (exemple : 50x50 px)
-        logo_path = '/home/alix/logo_podcast/logo_loc.png'
+        logo_path = 'logo_loc.png'
         logo_img = mpimg.imread(logo_path)
         #logo_width_px = logo_img.shape[1]
         #logo_height_px = logo_img.shape[0]
